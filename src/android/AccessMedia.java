@@ -15,31 +15,38 @@ public class AccessMedia extends CordovaPlugin {
 
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-		if (action.equals("coolMethod")) {
+		if (action.equals("getAllImages")) {
 			String message = args.getString(0);
-			this.coolMethod(message, callbackContext);
+			this.getAllImages(message, callbackContext);
 			return true;
 		}
 		return false;
 	}
 
-	private void coolMethod(String message, CallbackContext callbackContext) {
+	private void getAllImages(String message, CallbackContext callbackContext) {
 		final String[] columns = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID };
 		final String orderBy = MediaStore.Images.Media._ID;
 		Cursor cursor = this.cordova.getActivity().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null, null, orderBy);
 		int count = cursor.getCount();
-		ArrayList<String> arrPath = new ArrayList<String>();
+		JSONArray arrPath = new JSONArray();
 
 		for (int i = 0; i < count; i++) {
 			cursor.moveToPosition(i);
 			int dataColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
-			arrPath.add(cursor.getString(dataColumnIndex));
+			JSONObject pathObj = new JSONObject();
+			try{
+				pathObj.put("path", "" + cursor.getString(dataColumnIndex));
+				pathObj.put("isSelected", new Boolean(false));
+			}catch(Exception e){
+				System.out.println(e.getMessage());
+			}
+			arrPath.put(pathObj);
 		}
 
 		JSONObject obj = new JSONObject();
 
 		try{
-			obj.put("imageList", new JSONArray(arrPath));
+			obj.put("imageList", arrPath);
 		}catch(Exception e){
 			System.out.println(e.getMessage());
 		}

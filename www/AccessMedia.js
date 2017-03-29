@@ -4,8 +4,8 @@ var exec = require('cordova/exec');
 function accessMedia(){
 }
 
-accessMedia.prototype.coolMethod = function(arg0, success, error) {
-	exec(success, error, "AccessMedia", "coolMethod", [arg0]);
+accessMedia.prototype.getAllImages = function(arg0, success, error) {
+	exec(success, error, "AccessMedia", "getAllImages", [arg0]);
 };
 
 accessMedia.install = function () {
