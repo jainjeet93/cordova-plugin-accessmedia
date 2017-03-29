@@ -10,6 +10,7 @@ import org.apache.cordova.LOG;
 import android.provider.MediaStore;
 import android.database.Cursor;
 import java.util.*;
+import android.net.Uri;
 
 public class AccessMedia extends CordovaPlugin {
 
@@ -18,6 +19,10 @@ public class AccessMedia extends CordovaPlugin {
 		if (action.equals("getAllImages")) {
 			String message = args.getString(0);
 			this.getAllImages(message, callbackContext);
+			return true;
+		}else if (action.equals("getAllAudio")) {
+			String message = args.getString(0);
+			this.getAllAudio(message, callbackContext);
 			return true;
 		}
 		return false;
@@ -47,6 +52,39 @@ public class AccessMedia extends CordovaPlugin {
 
 		try{
 			obj.put("imageList", arrPath);
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+		}
+		callbackContext.success(obj);
+	}
+
+	private void getAllAudio(String message, CallbackContext callbackContext) {
+
+		Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+		final String[] columns = { MediaStore.Audio.Media.DATA, MediaStore.Audio.Media._ID };
+		Cursor c = this.cordova.getActivity().getContentResolver().query(uri, columns, null, null, null);
+
+		int count = c.getCount();
+		JSONArray tempAudioList = new JSONArray();
+
+		for (int i = 0; i < count; i++) {
+			c.moveToPosition(i);
+			int dataColumnIndex = c.getColumnIndex(MediaStore.Audio.Media.DATA);
+			JSONObject pathObj = new JSONObject();
+			try{
+				pathObj.put("path", "" + c.getString(dataColumnIndex));
+				pathObj.put("fileName", "" + c.getString(dataColumnIndex).split("/")[c.getString(dataColumnIndex).split("/").length - 1]);
+				pathObj.put("isSelected", new Boolean(false));
+			}catch(Exception e){
+				System.out.println(e.getMessage());
+			}
+			tempAudioList.put(pathObj);
+		}
+
+		JSONObject obj = new JSONObject();
+
+		try{
+			obj.put("audioList", tempAudioList);
 		}catch(Exception e){
 			System.out.println(e.getMessage());
 		}

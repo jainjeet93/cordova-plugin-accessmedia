@@ -8,6 +8,10 @@ accessMedia.prototype.getAllImages = function(arg0, success, error) {
 	exec(success, error, "AccessMedia", "getAllImages", [arg0]);
 };
 
+accessMedia.prototype.getAllAudio = function(arg0, success, error) {
+	exec(success, error, "AccessMedia", "getAllAudio", [arg0]);
+};
+
 accessMedia.install = function () {
 	if (!window.plugins) {
 		window.plugins = {};
