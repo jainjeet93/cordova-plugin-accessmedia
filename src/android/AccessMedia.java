@@ -34,7 +34,9 @@ public class AccessMedia extends CordovaPlugin {
 		Cursor cursor = this.cordova.getActivity().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null, null, orderBy);
 		int count = cursor.getCount();
 		JSONArray arrPath = new JSONArray();
-
+		if(count > 50){
+			count = 50;
+		}
 		for (int i = 0; i < count; i++) {
 			cursor.moveToPosition(i);
 			int dataColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
@@ -66,7 +68,9 @@ public class AccessMedia extends CordovaPlugin {
 
 		int count = c.getCount();
 		JSONArray tempAudioList = new JSONArray();
-
+		if(count > 50){
+			count = 50;
+		}
 		for (int i = 0; i < count; i++) {
 			c.moveToPosition(i);
 			int dataColumnIndex = c.getColumnIndex(MediaStore.Audio.Media.DATA);
