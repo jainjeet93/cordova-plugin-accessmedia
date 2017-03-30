@@ -43,6 +43,7 @@ public class AccessMedia extends CordovaPlugin {
 			JSONObject pathObj = new JSONObject();
 			try{
 				pathObj.put("path", "" + cursor.getString(dataColumnIndex));
+				pathObj.put("fileName", "" + cursor.getString(dataColumnIndex).split("/")[cursor.getString(dataColumnIndex).split("/").length - 1]);
 				pathObj.put("isSelected", new Boolean(false));
 			}catch(Exception e){
 				System.out.println(e.getMessage());
