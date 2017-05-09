@@ -30,7 +30,8 @@ public class AccessMedia extends CordovaPlugin {
 
 	private void getAllImages(String message, CallbackContext callbackContext) {
 		final String[] columns = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID };
-		final String orderBy = MediaStore.Images.Media._ID;
+		final String orderBy = MediaStore.Images.Media._ID+ " DESC";
+
 		Cursor cursor = this.cordova.getActivity().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null, null, orderBy);
 		int count = cursor.getCount();
 		JSONArray arrPath = new JSONArray();
