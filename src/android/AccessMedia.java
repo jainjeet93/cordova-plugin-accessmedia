@@ -66,7 +66,8 @@ public class AccessMedia extends CordovaPlugin {
 
 		Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 		final String[] columns = { MediaStore.Audio.Media.DATA, MediaStore.Audio.Media._ID };
-		Cursor c = this.cordova.getActivity().getContentResolver().query(uri, columns, null, null, null);
+		final String orderBy = MediaStore.Images.Media._ID+ " DESC";
+		Cursor c = this.cordova.getActivity().getContentResolver().query(uri, columns, null, null, null,  orderBy);
 
 		int count = c.getCount();
 		JSONArray tempAudioList = new JSONArray();
